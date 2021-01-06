@@ -70,7 +70,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> Word count:</span>
-            <span class="post-count">401</span>
+            <span class="post-count">1.3k</span>
         </span>
     </span>
 
@@ -79,7 +79,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> Reading time≈</span>
-            <span class="post-count">1 min</span>
+            <span class="post-count">4 min</span>
         </span>
     </span>
 </div>
@@ -117,10 +117,93 @@
 <p>如果有想直接看示例代码的同志可以私信我</p>
 <p>那岂不是，本篇文章到这里就可以结束了…</p>
 <p>qio tuo ma tie</p>
-<img src="/2021/01/06/Matlab-ROS%E5%AE%9E%E6%97%B6%E9%80%9A%E4%BF%A1/1.jpg" class title="This is an test image">
+<img src="/2021/01/06/Matlab-ROS%E5%AE%9E%E6%97%B6%E9%80%9A%E4%BF%A1/1.jpg" class>
 
 <p><img src="/2021/01/06/Matlab-ROS%E5%AE%9E%E6%97%B6%E9%80%9A%E4%BF%A1/Matlab-ROS%E5%AE%9E%E6%97%B6%E9%80%9A%E4%BF%A1%5C1.jpg" alt></p>
-<p>当然不是，事情没有这么简单，当我看到</p>
+<p>当然不是，事情没有这么简单</p>
+<p>当我用rostopic hz命令去查看matlab发布话题的频率时</p>
+<ol>
+<li>当循环中只有一个send()函数发布消息时，频率勉强可以，基本稳定在800hz-900hz</li>
+<li>当循环中出现receive()进行消息订阅时，频率马上下降到了100hz左右</li>
+</ol>
+<p>这时候，还没加入后续代码，仅仅因为消息的订阅和发布就耗费了大量时间</p>
+<p>额….</p>
+<p>因为不太清楚Matlab和ROS通信的机制，所以没办法知道具体原因</p>
+<p>官网上也有相关问题: <a href="https://www.mathworks.com/matlabcentral/answers/660433-populating-ros-messages-is-slow" target="_blank" rel="noopener">Populating ros messages is slow</a></p>
+<h3 id="2-2-MATLAB的TCP-UDP通信"><a href="#2-2-MATLAB的TCP-UDP通信" class="headerlink" title="2.2 MATLAB的TCP/UDP通信"></a>2.2 MATLAB的TCP/UDP通信</h3><p>我们的2号选手就是matlab的tcp/udp通信</p>
+<p>既然ros通信接口不好使，只能直接采用tcp或udp的通信协议</p>
+<p>具体的通信实现可以看官网</p>
+<p><a href="https://www.mathworks.com/help/matlab/ref/tcpclient.html" target="_blank" rel="noopener">MATLAB TCP</a></p>
+<p><a href="https://www.mathworks.com/help/instrument/udpport.html" target="_blank" rel="noopener">MATLAB UDP</a></p>
+<p>首先采用的是TCP，整体传输速率没有很大提升，pass</p>
+<p>udp虽然是不可靠的传输协议，但是我的两台电脑都在同一局域网内，应该问题不大</p>
+<p>后面的实验也证明了udp在短距离传输下，基本甚至完全不会出现丢包误传现象</p>
+<p>然而，matlab的udp传输速率也并没有多大提升</p>
+<p>通过分析研究，我猜测可能的原因是Matlab的IO读写太慢了！！！</p>
+<img src="/2021/01/06/Matlab-ROS%E5%AE%9E%E6%97%B6%E9%80%9A%E4%BF%A1/2.gif" class>
+
+<p><img src="/2021/01/06/Matlab-ROS%E5%AE%9E%E6%97%B6%E9%80%9A%E4%BF%A1/Matlab-ROS%E5%AE%9E%E6%97%B6%E9%80%9A%E4%BF%A1%5C2.gif" alt></p>
+<p>场面一度陷入了胶着</p>
+<p>matlab通信传输这条路基本不可行了</p>
+<h3 id="2-3-C-版本的MATLAB-Engine-API"><a href="#2-3-C-版本的MATLAB-Engine-API" class="headerlink" title="2.3 C++版本的MATLAB Engine API"></a>2.3 C++版本的MATLAB Engine API</h3><p>3号选手登场了</p>
+<p>考虑到单一的matlab并不能拯救我们的通信速率</p>
+<p>我们决定引入场外援助</p>
+<p>首先露面的场外援助是我们的C++</p>
+<p><strong>新的思路</strong>是：通过C++调用matlab引擎进行算法运算，然后再通过C++的socket通信将数据发送出去，貌似就解决了问题</p>
+<p>然而理想很丰满，现实很骨感</p>
+<p>虽然C ++的MATLAB引擎API提供了C ++编程语言和MATLAB之间的接口</p>
+<p>但是各项配置和使用都相当麻烦</p>
+<img src="/2021/01/06/Matlab-ROS%E5%AE%9E%E6%97%B6%E9%80%9A%E4%BF%A1/3.jpg" class>
+
+<p><img src="/2021/01/06/Matlab-ROS%E5%AE%9E%E6%97%B6%E9%80%9A%E4%BF%A1/Matlab-ROS%E5%AE%9E%E6%97%B6%E9%80%9A%E4%BF%A1%5C3.jpg" alt></p>
+<p>想学习的朋友可以参考以下文章</p>
+<p><a href="https://blog.csdn.net/yimiyangguang185/article/details/52626320" target="_blank" rel="noopener">matlab和c++混合编程—方法和步骤</a></p>
+<p><a href="https://www.mathworks.com/help/matlab/Cpp-api.html" target="_blank" rel="noopener">Calling MATLAB from C++</a></p>
+<p>但是，懒惰的我决定放弃，直接换方案</p>
+<h3 id="2-4-Python版本的MATLAB-Engine-API"><a href="#2-4-Python版本的MATLAB-Engine-API" class="headerlink" title="2.4 Python版本的MATLAB Engine API"></a>2.4 Python版本的MATLAB Engine API</h3><p>都说人生苦短，我学python；人生漫漫，python是岸</p>
+<img src="/2021/01/06/Matlab-ROS%E5%AE%9E%E6%97%B6%E9%80%9A%E4%BF%A1/4.gif" class>
+
+<p><img src="/2021/01/06/Matlab-ROS%E5%AE%9E%E6%97%B6%E9%80%9A%E4%BF%A1/Matlab-ROS%E5%AE%9E%E6%97%B6%E9%80%9A%E4%BF%A1%5C4.gif" alt></p>
+<p>起初考虑使用C++是因为项目中另一部分工作是C++实现的</p>
+<p>思忖着统一用C++解决了也不错</p>
+<p>但是，耐不住python的真香</p>
+<p>思路和2.3节基本不变，只是改用了python</p>
+<p>python调用matlab那是一个简洁明了</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> matlab.engine</span><br><span class="line">eng = matlab.engine.start_matlab()</span><br></pre></td></tr></table></figure>
+
+<p>简简单单两句话就启动了matlab引擎</p>
+<p>调用matlab的<code>isprime</code> 函数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tf = eng.isprime(<span class="number">37</span>)</span><br></pre></td></tr></table></figure>
+
+<p>具体教程可以见</p>
+<p><a href="https://blog.csdn.net/weixin_41521681/article/details/96499305" target="_blank" rel="noopener">python调用matlab API 汇总（全）</a></p>
+<p><a href="https://www.mathworks.com/help/matlab/matlab-engine-for-python.html" target="_blank" rel="noopener">Calling MATLAB from Python</a></p>
+<p>正当我以为大功告成之时，现实给我来了一记重锤</p>
+<div style="width:70%;margin:auto"><img src="/2021/01/06/Matlab-ROS%E5%AE%9E%E6%97%B6%E9%80%9A%E4%BF%A1/5.jpeg" class></div>
+
+<p><img src="/2021/01/06/Matlab-ROS%E5%AE%9E%E6%97%B6%E9%80%9A%E4%BF%A1/Matlab-ROS%E5%AE%9E%E6%97%B6%E9%80%9A%E4%BF%A1%5C5.jpeg" alt></p>
+<p>python调用matlab的引擎进行计算时，速度慢的令人发指</p>
+<p>还不如一开始直接上matlab呢</p>
+<h3 id="2-4-MATLAB调用Python"><a href="#2-4-MATLAB调用Python" class="headerlink" title="2.4 MATLAB调用Python"></a>2.4 MATLAB调用Python</h3><p>痛定思痛，我发现原先思路有些许小问题</p>
+<p>或许我不该想着其他语言来调用matlab进行计算，而是反过来，matlab调用其他语言进行通信</p>
+<p><strong>final思路</strong>: matlab进行算法运算，然后调用python将数据发送出去</p>
+<p>幸运的是，matlab提供了相关支持</p>
+<p>借助Python增强Matlab的能力，好比Matlab插上Python的翅膀，如虎添翼。</p>
+<ol>
+<li><p>编写好python的udp通信代码</p>
+<ul>
+<li>只能写成函数形式</li>
+</ul>
+</li>
+<li><p>将编写好的py文件放入matlab运行路径</p>
+</li>
+<li><p>可直接在matlab中调用自定义的函数</p>
+</li>
+</ol>
+<p>参考教程如下:</p>
+<p><a href="https://zhuanlan.zhihu.com/p/92081119" target="_blank" rel="noopener">知乎：Matlab调用Python</a></p>
+<p><a href="https://ww2.mathworks.cn/help/matlab/matlab_external/call-python-from-matlab.html" target="_blank" rel="noopener">官网： MATLAB 调用 Python</a></p>
+<p>到此，我们成功解决了实时通信的难题！！</p>
  
       <!-- reward -->
       
