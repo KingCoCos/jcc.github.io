@@ -265,6 +265,10 @@
 <h3 id="Hexo换主题"><a href="#Hexo换主题" class="headerlink" title="Hexo换主题"></a>Hexo换主题</h3><p>从hexo<a href="https://hexo.io/themes/" target="_blank" rel="noopener">主题网站</a>下载喜欢的主题解压到themes文件夹下</p>
 <p>修改_config.yml文件中 <strong>theme: name</strong></p>
 <p><a href="https://hexo.io/plugins/" target="_blank" rel="noopener">插件官网</a></p>
+<h3 id="设置-SSH-使用-hexo-deploy-时免输用户名密码"><a href="#设置-SSH-使用-hexo-deploy-时免输用户名密码" class="headerlink" title="设置 SSH 使用 hexo deploy 时免输用户名密码"></a>设置 SSH 使用 hexo deploy 时免输用户名密码</h3><p>想要部署的时候免登录密码，<a href="https://segmentfault.com/a/1190000005125610" target="_blank" rel="noopener">点击此处</a></p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">deploy:</span></span><br><span class="line"> <span class="attr">type:</span> <span class="string">git</span></span><br><span class="line"> <span class="attr">repository:</span> <span class="string">git@github.com:https://github.com/KingCoCos/kingcocos.github.io</span></span><br><span class="line"> <span class="attr">branch:</span> <span class="string">master</span></span><br></pre></td></tr></table></figure>
+
+<p>如果已经配置好ssh的，打开_confi.yml配置文件，只要在repository这一项前面加上<strong><a href="mailto:git@github.com">git@github.com</a>:</strong></p>
  
       <!-- reward -->
       
