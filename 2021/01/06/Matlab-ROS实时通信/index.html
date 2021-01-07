@@ -9,7 +9,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-    Matlab+ROS实时通信 |  Hexo
+    Matlab+ROS实时通信 |  大巴聪的博客
   </title>
   <meta name="generator" content="hexo-theme-ayer">
   
@@ -70,7 +70,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> Word count:</span>
-            <span class="post-count">1.3k</span>
+            <span class="post-count">1.4k</span>
         </span>
     </span>
 
@@ -79,7 +79,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> Reading time≈</span>
-            <span class="post-count">4 min</span>
+            <span class="post-count">5 min</span>
         </span>
     </span>
 </div>
@@ -95,7 +95,7 @@
     <div class="article-entry" itemprop="articleBody">
        
   <p>[toc]</p>
-<h3 id="一、开头"><a href="#一、开头" class="headerlink" title="一、开头"></a>一、开头</h3><p><strong>MATLAB</strong>: 强大的数学软件，自带的机器人工具箱<a href="https://www.mathworks.com/products/robotics.html" target="_blank" rel="noopener">robotic system toolbox</a>非常好用，很适合做机器人仿真，验证算法</p>
+<h2 id="一、开头"><a href="#一、开头" class="headerlink" title="一、开头"></a>一、开头</h2><p><strong>MATLAB</strong>: 强大的数学软件，自带的机器人工具箱<a href="https://www.mathworks.com/products/robotics.html" target="_blank" rel="noopener">robotic system toolbox</a>非常好用，很适合做机器人仿真，验证算法</p>
 <p><strong>ROS</strong>: 强大的开源机器人应用软件，提供了很多的实用工具库，感觉非常友好</p>
 <p>很明显，如果让这两个工具强强联合肯定可以节省很多时间，实乃科研狗的福音</p>
 <p>再也不用为了移植Matlab编写的算法到实验平台上而重写一份Python或C++代码了</p>
@@ -105,7 +105,7 @@
 <li>如何实现通信呢？？</li>
 </ol>
 <p>通信的方案有很多种，但是考虑到机械臂的控制频率达到了<strong>1000hz</strong>，通信延时太高的方案都会被cut掉，只有实时通信才能确保控制算法的效果。</p>
-<h3 id="二、拟定方案"><a href="#二、拟定方案" class="headerlink" title="二、拟定方案"></a>二、拟定方案</h3><h3 id="2-1-MATLAB中的ROS通信接口"><a href="#2-1-MATLAB中的ROS通信接口" class="headerlink" title="2.1 MATLAB中的ROS通信接口"></a>2.1 MATLAB中的ROS通信接口</h3><p>首先登场的<strong>1号选手</strong>是MATLAB中的ROS通信接口</p>
+<h2 id="二、拟定方案"><a href="#二、拟定方案" class="headerlink" title="二、拟定方案"></a>二、拟定方案</h2><h3 id="2-1-MATLAB中的ROS通信接口"><a href="#2-1-MATLAB中的ROS通信接口" class="headerlink" title="2.1 MATLAB中的ROS通信接口"></a>2.1 MATLAB中的ROS通信接口</h3><p>首先登场的<strong>1号选手</strong>是MATLAB中的ROS通信接口</p>
 <p>不得不说，matlab还是全面，直接自带了ros的通信接口</p>
 <p>只要和ros处于同一局域网下，配置一下环境，然后输入rosinit如果连接上就OK了</p>
 <p>接下来就完全可以同ros一样进行话题的订阅和发布了,简直完美！！</p>
@@ -208,6 +208,119 @@
 <img src="/2021/01/06/Matlab-ROS%E5%AE%9E%E6%97%B6%E9%80%9A%E4%BF%A1/6.png" class>
 
 <p><img src="/2021/01/06/Matlab-ROS%E5%AE%9E%E6%97%B6%E9%80%9A%E4%BF%A1/Matlab-ROS%E5%AE%9E%E6%97%B6%E9%80%9A%E4%BF%A1%5C6.png" alt></p>
+<h2 id="三、结尾"><a href="#三、结尾" class="headerlink" title="三、结尾"></a>三、结尾</h2><p>感谢各位看到这里</p>
+<p>如果有任何问题</p>
+<p>可以在评论区里留下你的疑问</p>
+<p>我会不定时查看并回复</p>
+<p>我是哒啵聪/大巴聪</p>
+<p>希望你能喜欢我的博客</p>
+<blockquote><p>梦想还是要有的，万一实现了呢.</p>
+<footer><strong>大巴聪</strong></footer></blockquote>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
  
       <!-- reward -->
       
@@ -415,7 +528,7 @@
 <nav class="navbar">
   
   <div class="logo">
-    <a href="/"><img src="/images/ayer-side.svg" alt="Hexo"></a>
+    <a href="/"><img src="/images/ayer-side.svg" alt="大巴聪的博客"></a>
   </div>
   
   <ul class="nav nav-main">
